@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+		<title>GOL FTD</title>
+		<link rel="stylesheet" href="src/style.css">
+	</head>
+	<body>
+		<canvas id="game" class="fxd game"></canvas>
+		<canvas id="grid" class="fxd grid"></canvas>
+		<div id="pane" class="fxd pane">
+
+			<div class="pane-header">
+				<h2>Game Of Life: Fight For Your Life</h2>
+				<h3><span id="nav-rules" class="btn inactive-btn">Description</span> | <span id="nav-option" class="btn">Configuration</span></h3>
+			</div>
+
+			<div id="pane-option" class="pane-option panels">
+				<form onsubmit="return false;" oninput="colnumO.value = colnum.valueAsNumber; live.value = getCellsNumber(popdens.valueAsNumber); popdensO.value = popdens.valueAsNumber.toFixed(2); gennumO.value = gennum.valueAsNumber; showgridO.value = !!showgrid.valueAsNumber; bothtribesO.value = !!bothtribes.valueAsNumber; checkingO.value = !!checking.valueAsNumber; var p = event.target.parentNode.getElementsByTagName('p')[0].style.opacity = 0.5;">
+
+					<div class="slider">
+					<p>Nombre de colonnes (7 - 233): <output for="colnum" name="colnumO">51</output></p>
+					<input name="colnum" id="colnum" type="range" min="7" max="233" value="51" step="2">
+					</div>
+
+					<div class="slider">
+					<p>Densité de la population (0.1 - 0.75): <output for="popdens" name="popdensO">0.40</output></p>
+					<p style="font-size: 75%; margin-top:-10px;">Max. live cells: <output for="popdens" name="live"></output></p>
+					<input name="popdens" id="popdens" type="range" min="0.1" max="0.75" value="0.4" step="0.01">
+					</div>
+
+					<div class="slider">
+					<p>Générations (0* - 1000): <output for="gennum" name="gennumO">256</output></p>
+					<input name="gennum" id="gennum" type="range" min="0" max="1000" value="255" step="5">
+					</div>
+
+					<div class="slider slider-radio">
+					<p>Afficher la grille : <output for="showgrid" name="showgridO">true</output></p>
+					<input name="showgrid" id="showgrid" type="range" min="0" max="1" value="1" step="1">
+					</div>
+
+					<div class="slider slider-radio">
+					<p>Mettez les deux tribus : <output for="bothtribes" name="bothtribesO">false</output></p>
+					<input name="bothtribes" id="bothtribes" type="range" min="0" max="1" value="0" step="1">
+					</div>
+
+					<div class="slider slider-radio">
+					<p>Effectuer la vérification : <output for="checking" name="checkingO">true</output></p>
+					<input name="checking" id="checking" type="range" min="0" max="1" value="1" step="1">
+					</div>
+
+					<div id="apply" class="btn-box btn-start">Appliquer la configuration</div>
+
+					<div style="width:50%; float:right;">
+						<div id="reset" class="btn-box btn-left">Réinitialiser</div>
+					</div>
+					<div style="width:50%; float:left;">
+						<div id="generate" class="btn-box btn-right">Générer</div>
+					</div>
+					<div style="clear:both;"></div>
+
+				</form>
+			</div>
+
+			<div id="pane-rules" class="pane-rules panels hidden">
+				<h3>Jeu</h3>
+				<p>Game Of Life: Fight For Your Life est un autre mode de jeu sur du modèle classique de John Conway </p>
+				<p>La principale caractéristique ajoutée de cette version est que vous disposez de deux tribus de cellules vivantes. Ces deux tribus vont s'affronter jusqu'à la mort après que vous ayez défini un champ de bataille. Pas nécessairement jusqu'à la mort, car vous pouvez limiter le nombre de générations à passer. </p>
+
+				<h3>Options</h3>
+				</p> <p>S'il vous plaît, n'oubliez pas de cliquer sur le bouton "Appliquer la configuration" pour appliquer réellement la configuration. Notez que vous commencerez avec un champ de bataille vide dans ce cas.</p>
+				<ul>
+					<li><strong>Nombre de colonnes</strong> - sélectionnez ceci et le nombre de lignes sera calculé automatiquement en fonction de la taille de la fenêtre de votre navigateur.</li>
+					<li><strong>Densité de population</strong> - sélectionnez la densité de population maximale autorisée pour vous et vos rivaux. Le nombre maximal exact de cellules vivantes autorisé vous sera également présenté.</li>
+					<li><strong>Définir les deux tribus</strong> - vous avez la possibilité de définir des champs de bataille pour les deux tribus. Sinon, le script remplira le volet de gauche de manière aléatoire par des cellules de tribus vertes. Le script utilisera le nombre maximum autorisé de cellules vivantes</li>.
+					<li><strong>Performer une vérification</strong> - si cette option est choisie, le script vérifiera toutes les 25 générations les éléments suivants :
+						<ol style="list-style-type : lower-alpha ;">
+							<li>s'il n'y a pas du tout de cellules vivantes</li>.
+							<li>si il ne reste que les cellules d'une seule tribu</li>.
+							<li>s'il y a une situation stable</li>
+							<li>s'il y a un champ de bataille "clignotant" et que ce clignotement a une période de deux</li>.
+						</ol>
+						Si l'un de ces éléments est vrai - le jeu s'arrêtera et les résultats vous seront présentés</li>.
+				</ul>
+
+				<h3>Jeu</h3>
+				<ol>
+					<li>Définir les options préférées.</li>
+					<li>Définir la position des cellules vivantes en cliquant ou en faisant glisser sur le champ de bataille. Notez que vous ne pouvez pas dépasser la quantité maximale autorisée de cellules. A tout moment, vous pouvez vider votre champ de bataille en cliquant sur le bouton Réinitialiser.</li>
+					<li>Cliquez sur le bouton Démarrer pour ouvrir le volet de gauche. Faites votre travail si vous avez choisi de gouverner les deux tribus.</li>
+					<li>Quand vous avez terminé, vous avez deux options :
+						<ol style="list-style-type : lower-alpha ;">.
+							<li>Lancer le passage automatique des générations en appuyant sur la barre d'espace. Pour arrêter - appuyez dessus une fois de plus.</li>
+							<li>Voir la génération suivante en appuyant sur n'importe quelle flèche du clavier.</li>
+							<li>Vous pouvez mélanger les deux façons précédentes pour continuer.</li>
+						</ol>
+					</li>
+					<li>Si le jeu est terminé et que vous avez apprécié ses résultats, vous pouvez revenir à la position initiale en appuyant sur "Esc"</li>.
+				</ol>
+
+				<h3>Merci</h3>
+			</div>
+
+			<div id="start" class="btn-box btn-start">Commencer</div>
+		</div>
+		<script src="src/a.js"></script>
+		<script src="src/b.js"></script>
+		<script src="src/c.js"></script>
+	</body>
+</html>
